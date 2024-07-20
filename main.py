@@ -2,6 +2,8 @@
 import requests
 # selectorlib extracts only that particular code from source code
 import selectorlib
+import smtplib
+import ssl
 
 URL = "http://programmer100.pythonanywhere.com/tours/"
 
@@ -19,8 +21,20 @@ def extract(source):
     return value
 
 
-def send_mail():
-    print("Mail was sent!")
+def send_email(message):
+    host = "smtp.gmail.com"
+    port = 465
+
+    username = "indulahari6@gmail.com"
+    password = "etzz hnjh nusz mtbs"
+
+    receiver = "indulahari6@gmail.com"
+    context = ssl.create_default_context()
+
+    with smtplib.SMTP_SSL(host, port, context=context)as server:
+        server.login(username, password)
+        server.sendmail(username, receiver, message)
+    print("mail was sent!")
 
 
 def store(extracted):
@@ -43,4 +57,4 @@ if __name__ == "__main__":
         if extracted not in content:
             # Only want to store data when the event is new
             store(extracted)
-            send_mail()
+            send_email(message="Hey, new event was found!")
